@@ -25,8 +25,35 @@ const userSchema = new Schema<IUser> (
                 },
                 message: 'Email must include an @ sign, Mucho Gracias.'
             }
-        }
+        },
+        thoughts: [
+            {
+            type: Schema.Types.ObjectId,
+            ref: 'Thoughts',
+        },
+        ],
+        friends: [
+            {
+                type:Schema.Types.ObjectId,
+                ref: 'Friends'
+            }
+        ]
+    },
+    {
+        toJSON: {
+            virtuals: true,
+        },
+        id: false,
+    }
+);
 
+userSchema
+    .virtual('friendcount')
+    .get(
+        function() {
+            return `You have this many ${this.friends.length}`;
+        });
 
+const User = model('user',userSchema);
 
-})
+export default User;        
