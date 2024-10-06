@@ -1,8 +1,8 @@
-import {User, Thought, Reaction} from '../models/index.js';
-import {application, Request, Response} from 'express';
+import {User, Thought,} from '../models/index.js';
+import {Request, Response} from 'express';
 
 // Get all users
-export const getUsers = async (req: Request, res: Response) => {
+export const getUsers = async (_req: Request, res: Response) => {
     try {
         const users = await User.find();
         res.json(users);
@@ -19,11 +19,10 @@ export const getSingleUser = async (req: Request, res: Response) => {
     if (!user ) {
         return res.status(404).json({message: 'No user with that ID'});
     }    
-    res.json(user);
+        return res.json(user);
         
     } catch (err) {
-        res.status(400).json(err);
-        return;
+        return res.status(400).json(err);
     }
 }
 // Create a User
@@ -47,7 +46,7 @@ export const updateUser = async (req: Request, res: Response) => {
         if (!user) {
             return res.status(404).json ({message: 'No User with this id!'});
         }
-        res.json(application);
+        res.json(user);
         return;
     } catch (error) {
         console.log(error);
@@ -74,7 +73,6 @@ export const deleteUser = async (req: Request, res: Response) => {
 export const addFriend = async (req: Request, res: Response) => {
     try {
         
-    
     const friend = await User.findOneAndUpdate(
         { _id: req.params.userId },
         { $addToSet: { friends: req.params.friendId}},
@@ -87,6 +85,7 @@ export const addFriend = async (req: Request, res: Response) => {
     return;
     } catch (error) {
         res.status(500).json(error);
+        return;
     } 
 } 
 // Delete a friend
@@ -99,8 +98,8 @@ export const deleteFriend = async (req: Request, res: Response) => {
         }
         await Thought.deleteMany({ _id: { $in: friend.thoughts}});
         res.json({message: 'Friend and associated thoughts deleted!'});
-        res.json(friend);
+        return res.json(friend);
     } catch (error) {
-        res.status(500).json(error);
+        return res.status(500).json(error);
     }
 }

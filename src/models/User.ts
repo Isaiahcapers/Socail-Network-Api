@@ -1,4 +1,4 @@
-import {Schema,Types,model, type Document} from 'mongoose';
+import {Schema, model, type Document} from 'mongoose';
 
 interface IUser extends Document {
     username: string,
@@ -49,10 +49,9 @@ const userSchema = new Schema<IUser> (
 
 userSchema
     .virtual('friendcount')
-    .get(
-        function() {
+    .get(function () {
             return `You have this many ${this.friends.length}`;
-        });
+        })
 
 const User = model('user',userSchema);
 
