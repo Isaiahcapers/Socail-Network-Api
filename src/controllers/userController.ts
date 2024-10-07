@@ -62,7 +62,7 @@ export const deleteUser = async (req: Request, res: Response) => {
             return res.status(404).json({message: 'No user with that ID'});
         }
         await Thought.deleteMany({ _id: { $in: user.thoughts}});
-        res.json({message: 'User and associated app deleted!'})
+        res.json({message: 'User and thoughts deleted!'})
         return;
     } catch (error) {
         res.status(500).json(error);
@@ -91,13 +91,14 @@ export const addFriend = async (req: Request, res: Response) => {
 // Delete a friend
 export const deleteFriend = async (req: Request, res: Response) => {
     try {
-        const friend = await User.findOneAndDelete(
-            { _id: req.params.userId });
+        const friend = await User.findOneAndUpdate(
+        { _id: req.params.friendId },
+        { $pull: { friends: req.params.friendId}},
+        {new: true});
         if (!friend) {
             return res.status(404).json({message: 'No friend with that ID'});
         }
-        await Thought.deleteMany({ _id: { $in: friend.thoughts}});
-        res.json({message: 'Friend and associated thoughts deleted!'});
+        res.json({message: 'Friend deleted!'});
         return res.json(friend);
     } catch (error) {
         return res.status(500).json(error);
