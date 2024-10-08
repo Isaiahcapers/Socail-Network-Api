@@ -92,14 +92,13 @@ export const addFriend = async (req: Request, res: Response) => {
 export const deleteFriend = async (req: Request, res: Response) => {
     try {
         const friend = await User.findOneAndUpdate(
-        { _id: req.params.friendId },
+        { _id: req.params.userId },
         { $pull: { friends: req.params.friendId}},
         {new: true});
         if (!friend) {
             return res.status(404).json({message: 'No friend with that ID'});
         }
-        res.json({message: 'Friend deleted!'});
-        return res.json(friend);
+        return res.json({message: 'Friend deleted!'});
     } catch (error) {
         return res.status(500).json(error);
     }
