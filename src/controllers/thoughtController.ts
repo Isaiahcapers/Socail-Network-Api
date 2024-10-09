@@ -84,3 +84,45 @@ export const deleteThought = async (req: Request, res: Response) => {
         return;
     }
 }
+
+// Add a Reaction
+export const addReaction = async (req: Request, res: Response) => {
+    try {
+        const thought = await Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $addToSet: { reactions: req.body } },
+            { new: true }
+        );
+        if (!thought) {
+            return res.status(404).json({ message: 'No thought with this ID!' });
+        }
+        res.json(`Reaction added to thought! ${thought._id}`);
+        return;
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+        return;
+    }
+}    
+
+// Delete a Reaction
+export const deleteReaction = async (req: Request, res: Response) => {
+    try {
+        const thought = await Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $pull: { reactions: { reactionId: req.body.reactionId } } },
+            { new: true }
+        );
+        if (!thought) {
+            return res.status(404).json({ message: 'No thought with this ID!' });
+        }
+        res.json(`Reaction deleted from thought! ${thought._id}`);
+        return;
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+        return;
+    }
+}    
+
+export default {getThoughts, getSingleThought, createThought, updateThought, deleteThought, addReaction, deleteReaction};

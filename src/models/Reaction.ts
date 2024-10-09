@@ -1,18 +1,13 @@
-import {Schema,Types, type Document} from 'mongoose';
+import {Schema, type Document} from 'mongoose';
 
 interface IReaction extends Document {
-    reactionId: Schema.Types.ObjectId,
-    reactionBody: String,
-    username: String,
+    reactionBody: string,
+    username: string,
     createdAt: Date
 }
 
 const reactionSchema = new Schema<IReaction> (
     {
-        reactionId: {
-            type: Schema.Types.ObjectId,
-            default: () => new Types.ObjectId()
-        },
         reactionBody: {
             type: String,
             required:true,

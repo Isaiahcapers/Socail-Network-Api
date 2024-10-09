@@ -12,17 +12,20 @@ export const getUsers = async (_req: Request, res: Response) => {
 }
 // Get a single user
 export const getSingleUser = async (req: Request, res: Response) => {
+    console.log(req.params.userId);
+    
     try {
-        const user = await User.findOne({_id: req.params.userId}).populate({path:'thoughts', 
-         });
-        // .populate({ path: 'thoughts', select: '-__v' });
-
+        const user = await User.findOne({_id: req.params.userId})
+        .select('-__v')
+        .populate({path: 'thoughts'})
+        .populate({path: 'friends'});
     if (!user ) {
         return res.status(404).json({message: 'No user with that ID'});
     }    
         return res.json(user);
         
     } catch (err) {
+        console.log(err);
         return res.status(400).json(err);
     }
 }

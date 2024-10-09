@@ -2,10 +2,10 @@ import {Schema,model, type Document} from 'mongoose';
 import Reaction from './Reaction.js';
 
 interface IThought extends Document {
-    thoughtText: String,
+    thoughtText: string,
     createdAt: Date,
-    username: String,
-    reactions: typeof Reaction []
+    username: string,
+    reactions: [typeof Reaction]
 }
 
 const thoughtSchema = new Schema<IThought> (
@@ -25,10 +25,7 @@ const thoughtSchema = new Schema<IThought> (
             required:true,
         },
         reactions: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Reaction',
-            },
+            Reaction
         ],
     },
     {

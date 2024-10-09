@@ -30,7 +30,7 @@ const userSchema = new Schema<IUser> (
             {
             type: Schema.Types.ObjectId,
             ref: 'Thought'
-            },
+            }
         ],
         friends: [
             {
@@ -53,6 +53,6 @@ userSchema
             return `You have this many friends: ${this.friends.length}`;
         })
 
-const User = model('user',userSchema);
+const User = model('User',userSchema);
 
 export default User;        
